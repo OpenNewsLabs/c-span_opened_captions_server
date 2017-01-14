@@ -2,7 +2,7 @@
 
 Work in progress. 
 
-Aim is to make google script or a system that takes in captions coming from openedcaptions.com(https://openedcaptions.com) by Dan Schultz and adds them to a google docs untill you stop the script.
+The aim is to make google script or a system that takes in captions coming from openedcaptions.com(https://openedcaptions.com) by Dan Schultz and adds them to a google docs untill you stop the script.
 
 Issue: Google script can refresh like a cron job stile only every minute, so it might make it challenging to pull from the openedcaptions server. There is the need for an intermediate server to buffer the text (which is what this repo is doing). 
 
@@ -56,7 +56,7 @@ run this server on a heroku instance or something similar.
 This is because opencaptions uses websockets and google apps script don't. otherwise it could be just an app script
 
 
-## Contributor 
+## Contributors
 
 [Dan Z](https://github.com/impronunciable)
 
