@@ -1,4 +1,5 @@
-# Opened captions intermedia buffer server + google docs apps script
+# Opened captions 
+## intermedia buffer server + google docs apps script
 
 The aim is to make a system that takes in captions coming from [openedcaptions.com](https://openedcaptions.com) by Dan Schultz and adds them to a google doc in real time (or close enough) untill you stop it.
 
