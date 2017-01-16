@@ -1,7 +1,7 @@
 # Opened captions 
-## intermedia buffer server + google docs apps script
+## Intermediate node buffer server + google docs apps script
 
-The aim is to make a system that takes in captions coming from [openedcaptions.com](https://openedcaptions.com) by Dan Schultz and adds them to a google doc in real time (or close enough) untill you stop it.
+The aim is to make a system that takes in captions coming from [openedcaptions.com](https://openedcaptions.com) (also on [github](https://github.com/slifty/opened-captions)) by Dan Schultz and adds them to a google doc in real time (or close enough) untill you stop it.
 
 Issue: Google apps script can refresh like a cron job stile only every minute, so it might make it challenging to pull from the openedcaptions server through scokets connection. There is the need for an intermediate server to buffer the text (which is what this repo is doing). 
 
