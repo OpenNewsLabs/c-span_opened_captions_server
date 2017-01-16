@@ -27,7 +27,7 @@ var offset = PropertiesService.getScriptProperties().getProperty('offset') || 0 
 
 // explained in the github repo for the project, currently using ngrok to prototype.
 // before getting started replace this with the URL of the REST end point of the intermediate server that does the buffering
-var openedCaptionsIntermediateEndPointEndServer = 'http://9de9108b.ngrok.io'; 
+var openedCaptionsIntermediateEndPointEndServer = 'http://8f06f022.ngrok.io'; 
 
 /*
 * main function of google app script 
@@ -54,9 +54,8 @@ function appendToDocument(textToAdd){
   var doc = DocumentApp.getActiveDocument();
   var body = doc.getBody();
   // Insert paragraph of text at the end of the document.
-  body.appendParagraph(formatText(textToAdd));
+  body.appendParagraph(textToAdd);
 }
-
 
 /*
 * read rest API endpoint and returns content
@@ -70,9 +69,9 @@ function fetchData(url){
 * format text for google doc.
 * This could maybe moved to the intermediate server?
 */
-function formatText(text){
+//function formatText(text){
   //add line breaks for occurences of`>>`
-  var res = text.replace(/>>/g, "\n\n")
+//  var res = text.replace(/>>/g, "\n\n")
   //capitalize any line after `.`
   
   // add new line when identify new speaker
@@ -83,5 +82,5 @@ function formatText(text){
   //put [applause] on it's own line with spaces before and after
   //res = res.replace(/[applause]/g, "\n[applause]\n")
   
-  return res;
-}
+//  return res;
+//}
