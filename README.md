@@ -5,7 +5,7 @@ The aim is to make a system that takes in captions coming from [openedcaptions.c
 
 Issue: Google apps script can refresh like a cron job stile only every minute, so it might make it challenging to pull from the openedcaptions server through scokets connection. There is the need for an intermediate server to buffer the text (which is what this repo is doing). 
 
-For buffering the text. Run this server on a heroku or EC2 instance or something similar. See below for details on running it locally and using `ngrok` to access the local host end point from google docs app script.
+For buffering the text. Run this server on a heroku or EC2 instance or something similar. See below for details on running it locally and using [`ngrok`](https://github.com/OpenNewsLabs/c-span_opened_captions_server#testing-app-script-using-ngrok) to access the local host end point from google docs app script.
 
 This server needed because opencaptions uses websockets and google apps script don't. Otherwise it could all be run just inside of a google app script.
 
