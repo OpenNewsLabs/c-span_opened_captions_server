@@ -43,7 +43,7 @@ If you go to [`localhost:5000?offset=100`](http://localhost:5000?offset=100) you
 ## Setup the google doc app script
 How would I connect this to a google doc?
 
-3- create a google doc, and add a scrip to it. **tools** -> **script editor**
+3- create a google doc, and add a scrip to it. **tools** -> **script editor**      
 4- copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
 
 ## Testing app script using ngrok
@@ -59,7 +59,7 @@ How would I connect this to a google doc?
 
 ## Connect google doc app script to ngrok server
 
-8- add the ngrok url to the google app script, at line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c8b8351d.ngrok.io';`
+8- add the ngrok url to the google app script, at line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c8b8351d.ngrok.io';`      
 9- add script global variable for offset as key with a value of `0` to begin with.  under **file** -> **projec properties** -> **script properties**. (repeat this step if you need to reset the script).
 
 10- Then to get things going setup a 1 minute triggered event in google app script  for `myFunction` under **Resources** -> **All your treiggers**. More info on running a google app script every minute can be found in their [documentation](https://deveopers.google.com/apps-script/guides/triggers/installable#time-driven_triggers)
