@@ -7,7 +7,7 @@ Issue: Google apps script can refresh like a cron job stile only every minute, s
 
 For buffering the text. Run this server on a heroku or EC2 instance or something similar. See below for details on running it locally and using [`ngrok`](https://github.com/OpenNewsLabs/c-span_opened_captions_server#testing-app-script-using-ngrok) to access the local host end point from google docs app script.
 
-This server needed because opencaptions uses websockets and google apps script don't. Otherwise it could all be run just inside of a google app script.
+This is server needed because opencaptions uses websockets and google apps script don't. Otherwise it could all be run just inside of a google app script.
 
 For the Google app script initially looked at [NPR one on github](https://github.com/nprapps/debates) from [their live fact checking debate](https://source.opennews.org/en-US/articles/how-npr-transcribes-and-fact-checks-debates-live).
 
@@ -46,7 +46,7 @@ How would I connect this to a google doc?
 3- create a google doc, and add a scrip to it. **tools** -> **script editor**      
 4- copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
 
-## Testing app script using ngrok
+## create server api end point using ngrok
 [ngrok](https://ngrok.com/) description
 
 >Don’t constantly redeploy your in-progress work to get feedback from clients. ngrok creates a secure public URL (https://yourapp.ngrok.io) to a local webserver on your machine. Iterate quickly with immediate feedback without interrupting flow.
