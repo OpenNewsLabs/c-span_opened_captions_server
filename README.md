@@ -43,11 +43,6 @@ If you go to [`localhost:5000?offset=100`](http://localhost:5000?offset=100) you
 ## Setup the google doc app script
 How would I connect this to a google doc?
 
-You can find  the google app script to add to the google doc in the [google_app_script](./google_app_script/main.gs)
-
-
-More info on running a google app script every minute can be found in their [documentation](https://deveopers.google.com/apps-script/guides/triggers/installable#time-driven_triggers)
-
 3- create a google doc, and add a scrip to it. **tools** -> **script editor**
 4- copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
 
@@ -60,7 +55,6 @@ More info on running a google app script every minute can be found in their [doc
 
 6- To run, start ngrok forwarding  `ngrok http 5000`
 
-
 7- This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.ngrok.io/) which you can add to the google app script, as described in next section. 
 
 ## Connect google doc app script to ngrok server
@@ -68,9 +62,9 @@ More info on running a google app script every minute can be found in their [doc
 8- add the ngrok url to the google app script, at line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c8b8351d.ngrok.io';`
 9- add script global variable for offset as key with a value of `0` to begin with.  under **file** -> **projec properties** -> **script properties**. (repeat this step if you need to reset the script).
 
-10- Then to get things going setup a 1 minute triggered event in google app script  for `myFunction` under **Resources** -> **All your treiggers**. 
-11- Watch the text being updated in the google doc every minute.
+10- Then to get things going setup a 1 minute triggered event in google app script  for `myFunction` under **Resources** -> **All your treiggers**. More info on running a google app script every minute can be found in their [documentation](https://deveopers.google.com/apps-script/guides/triggers/installable#time-driven_triggers)
 
+11- Watch the text being updated in the google doc every minute.
 
 
 ## Contributors
