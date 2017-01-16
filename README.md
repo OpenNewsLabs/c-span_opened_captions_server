@@ -32,7 +32,9 @@ https://openedcaptions.com/
 
 ## Setup and run the server
 
-`npm install` then `npm start` it gets the stream from opencaptions and store into `transcription.txt`. It also opens a server on port `5000`.
+1. `npm install` 
+
+2. then `npm start` it gets the stream from opencaptions and store into `transcription.txt`. It also opens a server on port `5000`.
 
 If you pass the querystring offset it offsets the string
 enter with the browser to [`localhost:5000`](localhost:5000) you get everything.
@@ -46,41 +48,35 @@ You can find  the google app script to add to the google doc in the [google_app_
 
 More info on running a google app script every minute can be found in their [documentation](https://deveopers.google.com/apps-script/guides/triggers/installable#time-driven_triggers)
 
-- create a google doc, and add a scrip to it. **tools** -> **script editor**
-- copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
+3. create a google doc, and add a scrip to it. **tools** -> **script editor**
+4. copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
 
 ## Testing app script using ngrok
 [ngrok](https://ngrok.com/) description
 
 >Don’t constantly redeploy your in-progress work to get feedback from clients. ngrok creates a secure public URL (https://yourapp.ngrok.io) to a local webserver on your machine. Iterate quickly with immediate feedback without interrupting flow.
 
-To install
+5. To install `npm install -g ngrok`
 
-```
-npm install -g ngrok
-```
-
-To run, start ngrok forwarding 
-
-```
-ngrok http 5000
-```
+6. To run, start ngrok forwarding  `ngrok http 5000`
 
 
-This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.ngrok.io/) which you can add to the google app script, as described in next section. 
+7. This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.ngrok.io/) which you can add to the google app script, as described in next section. 
 
 ## Connect google doc app script to ngrok server
 
-- add the ngrok url to the google app script, at line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c8b8351d.ngrok.io';`
-- add script global variable for offset as key with a value of `0` to begin with.  under **file** -> **projec properties** -> **script properties**. (repeat this step if you need to reset the script).
+8. add the ngrok url to the google app script, at line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c8b8351d.ngrok.io';`
+9. add script global variable for offset as key with a value of `0` to begin with.  under **file** -> **projec properties** -> **script properties**. (repeat this step if you need to reset the script).
 
-- Then to get things going setup a 1 minute triggered event in google app script  for `myFunction` under **Resources** -> **All your treiggers**. 
-- Watch the text being updated in the google doc every minute.
+10. Then to get things going setup a 1 minute triggered event in google app script  for `myFunction` under **Resources** -> **All your treiggers**. 
+11. Watch the text being updated in the google doc every minute.
 
-The project is currently in active development, feel free to get in touch with any questions.
 
 
 ## Contributors
+
+The project is currently in active development, feel free to get in touch with any questions.
+
 
 [Dan Z](https://github.com/impronunciable)
 
