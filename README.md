@@ -1,4 +1,4 @@
-# Opened captions server for google docs apps script
+ch# Opened captions server for google docs apps script
 
 Work in progress. 
 
@@ -31,8 +31,8 @@ https://openedcaptions.com/
 `npm install` then `npm start` it gets the stream from opencaptions and store into `transcription.txt`. It also opens a server on port `5000`.
 
 If you pass the querystring offset it offsets the string
-enter with the browser to `localhost:5000` you get everything.
-If you go to `localhost:5000?offset=100` you get the text starting from the 101 character from when you started the server.
+enter with the browser to [`localhost:5000`](localhost:5000) you get everything.
+If you go to [`localhost:5000?offset=100`](http://localhost:5000?offset=100) you get the text starting from the 101 character from when you started the server.
 
 
 ## Connnect to google docs / Apps script
@@ -73,7 +73,7 @@ A little fiddly to setup, but it works for now.
 
 - Start local server for this reposetory using `npm start` from terminal
 - start `ngrok` by typing `ngrok http 5000` and hit enter
-- take URL provided by ngrok and add it to the google app script.  similar to `http://c3d6d9e8.ngrok.io`
+- take URL provided by ngrok and add it to the google app script.  similar to [`http://c3d6d9e8.ngrok.io`](http://c3d6d9e8.ngrok.io)
 - add this url to the google app script, line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c3d6d9e8.ngrok.io';`
 - add script global variable for offset as key and value of `0` to begin with under `file -> projec properties -> script properties.` (repeat this step if you need to reset the script).
 - setup 1 minute triggered event in google app script  for `myFunction` under Resources -> All your treiggers. 
