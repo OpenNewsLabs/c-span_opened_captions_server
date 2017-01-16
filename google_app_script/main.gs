@@ -4,26 +4,35 @@
 * www.openedcaptions.com routes captions from C-Span 1 channel to socket end point. 
 * an itnermediate server is needed to buffer text from socket and expose a REST API end point. 
 * This script reads from the intermedia server and adds the content to a google doc.
-* Because the intermediate server used for buffering supports reading from a charachter offest from the start of the stream.
-* we use a using Global variables in google app script to keep track of the offset. 
+* The intermediate server used for buffering supports reading from a charachter offest from the start of the stream.
+* we use a Global variable in google app script to keep track of the offset. 
 * This way each new request, every minute, gets only the latest text added from previous request.
 * https://deveopers.google.com/apps-script/guides/triggers/installable#time-driven_triggers
+*
+* Reset offset global variable
 * to reset the project property for offset global variable before running the script go in FILE -> PROJECT PROPERTIES -> SCRIPT PROPERTIES and modify offset value to Zero.
+* 
+* start 1 minute trigger
 * to start and keep running at regular one minute intervalls. go under RESOURCES -> ALL YOUR TRIGGERS and add myFunction to a time driven event for a 1 minute intervall.
+*
 * see readme for more comprehesive instructions on how to set up the project.
+* 
 * author: Pietro Passarelli - @pietropassarell. pietro.passarelli@gmail.com, pietropassarelli@voxmedia.com 
 */
-
-
 
 //https://stackoverflow.com/questions/24721226/how-to-define-global-variable-in-google-apps-script
 var offset = PropertiesService.getScriptProperties().getProperty('offset') || 0 ;
 
 // explained in the github repo for the project, currently using ngrok to prototype.
 // before getting started replace this with the URL of the REST end point of the intermediate server that does the buffering
-var openedCaptionsIntermediateEndPointEndServer = 'http://c3d6d9e8.ngrok.io'; 
+var openedCaptionsIntermediateEndPointEndServer = 'http://9de9108b.ngrok.io'; 
 
-// main function of google app script 
+/*
+* main function of google app script 
+* gets data from intermediate buffer server from latest offset. 
+* updates offset
+* appends text to document 
+*/
 function myFunction() {
   // Fetch plain text data from intermediate buffer server with char offset.
   var response = fetchData(openedCaptionsIntermediateEndPointEndServer+"?offset="+offset); 
