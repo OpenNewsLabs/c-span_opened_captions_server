@@ -71,7 +71,7 @@ This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.n
 
 ## Connect google doc app script to ngrok server
 
-- add the ngrok url to the google app script, at line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c3d6d9e8.ngrok.io';`
+- add the ngrok url to the google app script, at line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c8b8351d.ngrok.io';`
 - add script global variable for offset as key with a value of `0` to begin with.  under **file** -> **projec properties** -> **script properties**. (repeat this step if you need to reset the script).
 
 - Then to get things going setup a 1 minute triggered event in google app script  for `myFunction` under **Resources** -> **All your treiggers**. 
