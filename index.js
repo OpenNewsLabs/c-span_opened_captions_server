@@ -17,7 +17,8 @@ const stream = fs.createWriteStream(fpath, {flags: 'a'})
 
 const socket = io.connect('https://openedcaptions.com:443')
 socket.on('word', data => {
-  const word = ' ' + data.data.body.toLowerCase()
+  //add additional formating such as downcase and a line breaks for occurences of`>>`
+  const word = ' ' + data.data.body.toLowerCase().replace(/>>/g, "\n\n")
   stream.write(word)
   str += word      
 })
