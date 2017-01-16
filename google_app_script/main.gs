@@ -1,6 +1,8 @@
 /*
 * A script to add captions from C-Span channel to a google doc every 1 minute.
 * More details on overall project on github https://github.com/OpenNewsLabs/c-span_opened_captions_server 
+* [CSPan live stream](http://www.stream2watch.cc/live-television/united-states/c-span-live-stream) to check against captions.
+* 
 * www.openedcaptions.com routes captions from C-Span 1 channel to socket end point. 
 * an itnermediate server is needed to buffer text from socket and expose a REST API end point. 
 * This script reads from the intermedia server and adds the content to a google doc.
