@@ -68,14 +68,14 @@ This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.n
 
 A little fiddly to setup, but it works for now. 
 
-- create a google doc, and add a scrip to it. [tools -> script editor]
+- create a google doc, and add a scrip to it. *tools* -> *script editor*
 - copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
 
 - Start local server for this reposetory using `npm start` from terminal
 - start `ngrok` by typing `ngrok http 5000` and hit enter
 - take URL provided by ngrok and add it to the google app script.  similar to [`http://c3d6d9e8.ngrok.io`](http://c3d6d9e8.ngrok.io)
 - add this url to the google app script, line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c3d6d9e8.ngrok.io';`
-- add script global variable for offset as key and value of `0` to begin with under `file -> projec properties -> script properties.` (repeat this step if you need to reset the script).
+- add script global variable for offset as key and value of `0` to begin with under *file* -> *projec properties* -> *script properties*. (repeat this step if you need to reset the script).
 - setup 1 minute triggered event in google app script  for `myFunction` under Resources -> All your treiggers. 
 - Watch the text being updated in the google doc.
 
