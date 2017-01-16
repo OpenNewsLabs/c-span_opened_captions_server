@@ -1,4 +1,9 @@
-
+/*
+*  www.openedcaptions.com routes captions from C-Span 1 channel to a socket end point. 
+* This script serves as an itnermediate server to buffer text from socket and expose it as REST API end point. 
+* * that also support char offset. see README for more info.
+*  author: Dan Z @impronunciable
+*/
 const io = require('socket.io-client')
 const fs = require('fs')
 const http = require('http')
