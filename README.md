@@ -77,6 +77,7 @@ This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.n
 - Then to get things going setup a 1 minute triggered event in google app script  for `myFunction` under **Resources** -> **All your treiggers**. 
 - Watch the text being updated in the google doc every minute.
 
+The project is currently in active development, feel free to get in touch with any questions.
 
 
 ## Contributors
