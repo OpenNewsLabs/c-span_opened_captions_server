@@ -75,6 +75,11 @@ function formatText(text){
   var res = text.replace(/>>/g, "\n\n")
   //capitalize any line after `.`
   
+  // add new line when identify new speaker
+  // eg speaker appear in text preceeded by space and end with `:` such as ` al sharpton:`
+  // var speakerPattern =  /[a-z ]+:/g
+  // var speakersArray = res.match(speakerPattern);
+  
   //put [applause] on it's own line with spaces before and after
   //res = res.replace(/[applause]/g, "\n[applause]\n")
   
