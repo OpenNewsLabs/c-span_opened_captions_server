@@ -8,21 +8,29 @@ const io = require('socket.io-client')
 const fs = require('fs')
 const http = require('http')
 const url = require('url')
+const s = require('underscore.string')
+const parseCsv = require('csv-parse/lib/sync')
 
-const ttl = 20 * 60 * 1000 // 20 mins -> microseconds
-const cacheCheckInterval = 5 * 60 * 1000 // 5 mins -> microseconds
-setInterval(cleanCache, cacheCheckInterval)
+// Load proper noun dictionary
+const words = parseCsv(fs.readFileSync('words.csv'))
 
 // Where we stash our stuff
 var cache = []
 
+// Setup a cache buster so our cache doesn't use all the memory
+const ttl = 20 * 60 * 1000 // 20 mins -> microseconds
+const cacheCheckInterval = 5 * 60 * 1000 // 5 mins -> microseconds
+setInterval(cleanCache, cacheCheckInterval)
+
+// Setup a transcription file, if desired
 var txt = false;
 if ( process.env.TRANSCRIPT_FILE ) {
-  if ( fs.existsSync(process.env.TRANSCRIPT_FILE) ) {
+  const transcriptFile = process.env.TRANSCRIPT_FILE
+  if ( fs.existsSync(transcriptFile) ) {
     cache.push({t: Date.now(), r: fs.readFileSync(transcriptFile)})
   }
 
-  txt = fs.createWriteStream(transcriptFile)
+  txt = fs.createWriteStream(transcriptFile, {flag: 'a'})
 }
 
 const socket = io.connect('https://openedcaptions.com:443')
@@ -46,19 +54,25 @@ http.createServer((req, res) => {
 }).listen(process.env.PORT || 5000)
 
 function formatText(str) {
-  return str.toLowerCase()
-    .replace("\r\n", ' ')
-    .replace(/\s+/g, ' ')
-    .replace(/\s+(!|\?|;|:|,|\.)/g, '$1')
-    .replace(/ mrs\.? /gi, ' Mrs. ')
-    .replace(/ ms\.? /gi, ' Ms. ')
-    .replace(/ mr\.? /gi, ' Mr. ')
-    .replace(/ dr\.? /gi, ' Dr. ')
-    .replace(/ i /g, ' I ')
-    .replace(/ senator (\w)/gi, (match, a) => { return ' Senator ' + a.toUpperCase() })
-    .replace(/(!|\?|:|\.|>>)\s+(\w)/g, (match, a, b) => { return a + ' ' + b.toUpperCase() })
-    .replace(/\s*>>\s*/g, "\n\n")
-    .trim()
+  var ret = str.toLowerCase().replace("\r\n", ' ') // remove random line breaks
+  ret = s.clean(ret) // remove redundant spaces
+
+  // now use our words file to do a bunch of stuff
+  words.forEach((pair) => {
+    ret = ret
+      .replace(new RegExp(` ${pair[0]}( |\\.|,|:)`, 'gi'), (match, a) => { return ` ${pair[1]}${a}` })
+      .replace(new RegExp(`^${pair[0]}( |\\.|,|:)`, 'i'), (match, a) => { return `${pair[1]}${a}` })
+      .replace(new RegExp(` ${pair[0]}$`, 'i'), pair[1])
+  })
+
+  ret = ret
+    .replace(/\s+(!|\?|;|:|,|\.)/g, '$1') // remove blank space before puncuation
+    .replace(/ (senator|sen\.?|rep\.?|mrs\.?|ms\.?|dr\.?) (\w)/gi,
+             (match, a, b) => { return ` ${s.capitalize(a)} ${b.toUpperCase()}` }) // handle honorifics
+    .replace(/(!|\?|:|\.|>>)\s+(\w)/g, (match, a, b) => { return `${a} ${b.toUpperCase()}` }) // Cap first letter of sentences
+    .replace(/\s*>>\s*/g, "\n\n") // handle whatever >> means
+
+  return ret
 }
 
 function getWordsSince(timestamp) {
