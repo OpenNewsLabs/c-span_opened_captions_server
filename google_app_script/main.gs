@@ -33,19 +33,15 @@ var capServer = 'https://vox-cspan-captions.herokuapp.com/';
 * appends text to document
 */
 function updateCaptions() {
-  // https://stackoverflow.com/questions/24721226/how-to-define-global-variable-in-google-apps-script
-  var props = PropertiesService.getScriptProperties();
-  var lastCheck = props.getProperty('last_check') || 0 ;
-
   // Fetch plain text data from intermediate buffer server with char offset.
-  var response = fetchData(capServer + "?since=" + lastCheck);
+  var response = fetchData(capServer + "?since=" + getSavedPlace());
 
   // updating global var for char offset at document level.
   // global var properties stored as string, converting to int to add response carachter length 
-  props.setProperty('last_check', response.now);
+  savePlace(response.now);
 
   //append to google doc
-  appendToDocument(' ' + response.captions);
+  appendToDocument(response.captions);
 }
 
 /*
@@ -64,4 +60,17 @@ function appendToDocument(textToAdd){
 function fetchData(url){
   var response = UrlFetchApp.fetch(url);
   return JSON.parse(response.getContentText("UTF-8"));
+}
+
+function resetPlace() {
+  savePlace(0);
+}
+
+function savePlace(timestamp) {
+  PropertiesService.getScriptProperties().setProperty('last_check', timestamp.toString());
+}
+
+function getSavedPlace() {
+  // https://stackoverflow.com/questions/24721226/how-to-define-global-variable-in-google-apps-script
+  return PropertiesService.getScriptProperties().getProperty('last_check') || '0';
 }
