@@ -9,20 +9,28 @@ const fs = require('fs')
 const http = require('http')
 const url = require('url')
 
-const transcriptFile = 'transcription.txt'
 const ttl = 20 * 60 * 1000 // 20 mins -> microseconds
 const cacheCheckInterval = 5 * 60 * 1000 // 5 mins -> microseconds
-var cache = []
-if ( fs.existsSync(transcriptFile) ) {
-  cache.push({t: Date.now(), r: fs.readFileSync(transcriptFile)})
-}
-setInterval(cleanCache, cacheCheckInterval)
 
-const txt = fs.createWriteStream(transcriptFile)
+// Where we stash our stuff
+var cache = []
+
+if ( process.env.TRANSCRIPT_FILE ) {
+  const transcriptFile = process.env.TRANSCRIPT_FILE
+  if ( fs.existsSync(transcriptFile) ) {
+    cache.push({t: Date.now(), r: fs.readFileSync(transcriptFile)})
+  }
+  setInterval(cleanCache, cacheCheckInterval)
+
+  const txt = fs.createWriteStream(transcriptFile)
+} else {
+  const txt = false;
+}
+
 const socket = io.connect('https://openedcaptions.com:443')
 socket.on('content', data => {
-  txt.write(data.data.body)
-  if ( data.data.body === "\r\n" ) { return; }
+  if ( txt ) { txt.write(data.data.body) }
+  if ( data.data.body === "\r\n" ) { return }
   const dat = {t: Date.now(), r: data.data.body}
   console.log(dat.t, dat.r)
   cache.push(dat)
