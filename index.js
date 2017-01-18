@@ -65,13 +65,13 @@ function formatText(str) {
   // now use our words file to do a bunch of stuff
   words.forEach((pair) => {
     ret = ret
-      .replace(new RegExp(` ${pair[0].replace('.', '\\.')}( |\\.|,|:)`, 'gi'), (match, a) => { return ` ${pair[1]}${a}` })
-      .replace(new RegExp(`^${pair[0]}( |\\.|,|:)`, 'i'), (match, a) => { return `${pair[1]}${a}` })
+      .replace(new RegExp(` ${pair[0].replace('.', '\\.')}( |\\.|,|:|')`, 'gi'), (match, a) => { return ` ${pair[1]}${a}` })
+      .replace(new RegExp(`^${pair[0]}( |\\.|,|:|')`, 'i'), (match, a) => { return `${pair[1]}${a}` })
       .replace(new RegExp(` ${pair[0]}$`, 'i'), pair[1])
   })
 
   ret = ret
-    .replace(/\s+(!|\?|;|:|,|\.)/g, '$1') // remove blank space before puncuation
+    .replace(/\s+(!|\?|;|:|,|\.|'|")/g, '$1') // remove blank space before puncuation
     .replace(/ (senator|sen\.?|rep\.?|mr\.?|mrs\.?|ms\.?|dr\.?) (\w)/gi,
              (match, a, b) => { return ` ${s.capitalize(a)} ${b.toUpperCase()}` }) // handle honorifics
     .replace(/(!|\?|:|\.|>>)\s+(\w)/g, (match, a, b) => { return `${a} ${b.toUpperCase()}` }) // Cap first letter of sentences
