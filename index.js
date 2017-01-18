@@ -16,15 +16,13 @@ setInterval(cleanCache, cacheCheckInterval)
 // Where we stash our stuff
 var cache = []
 
+var txt = false;
 if ( process.env.TRANSCRIPT_FILE ) {
-  const transcriptFile = process.env.TRANSCRIPT_FILE
-  if ( fs.existsSync(transcriptFile) ) {
+  if ( fs.existsSync(process.env.TRANSCRIPT_FILE) ) {
     cache.push({t: Date.now(), r: fs.readFileSync(transcriptFile)})
   }
 
-  const txt = fs.createWriteStream(transcriptFile)
-} else {
-  const txt = false;
+  txt = fs.createWriteStream(transcriptFile)
 }
 
 const socket = io.connect('https://openedcaptions.com:443')
