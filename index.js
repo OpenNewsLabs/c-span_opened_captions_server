@@ -76,7 +76,7 @@ function formatText(str) {
              (match, a, b) => { return ` ${s.capitalize(a)} ${b.toUpperCase()}` }) // handle honorifics
     .replace(/(!|\?|:|\.|>>)\s+(\w)/g, (match, a, b) => { return `${a} ${b.toUpperCase()}` }) // Cap first letter of sentences
     .replace(/\s*>>\s*/g, "\n\n") // handle whatever >> means
-    .replace(/(\.|"|!|\?)\w*([a-zA-Z. ]{2,30}:)/, '$1\n\n$2')
+    .replace(/(\.|"|!|\?)\w*([a-zA-Z. ]{2,30}:)/g, '$1\n\n$2')
 
   return ret
 }
