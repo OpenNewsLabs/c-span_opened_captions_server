@@ -68,6 +68,9 @@ republicans,Republicans
 democrats,Democrats
 twitter,Twitter
 facebook,Facebook
+cnn,CNN
+buzzfeed,Buzzfeed
+
 putin,Putin
 isis,ISIS
 i.s.i.s.,ISIS
@@ -78,6 +81,18 @@ thursday,Thursday
 friday,Friday
 saturday,Saturday
 sunday,Sunday
+january,January
+february,February
+march,March
+april,April
+may,May
+june,June
+july,July
+august,August
+september,September
+october,October
+november,November
+december,December
 europe,Europe
 mexico,Mexico
 mexican,Mexican
@@ -94,3 +109,8 @@ c-span,C-SPAN
 cuba,Cuba
 cuban,Cuban
 cuban,Cubans
+congress,Congress
+senate,Senate
+house of representatives,House of Representatives
+supreme court,Supreme Court
+chief justice,Chief Justice
