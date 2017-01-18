@@ -72,7 +72,7 @@ function formatText(str) {
 
   ret = ret
     .replace(/\s+(!|\?|;|:|,|\.)/g, '$1') // remove blank space before puncuation
-    .replace(/ (senator|sen\.?|rep\.?|mrs\.?|ms\.?|dr\.?) (\w)/gi,
+    .replace(/ (senator|sen\.?|rep\.?|mr\.?|mrs\.?|ms\.?|dr\.?) (\w)/gi,
              (match, a, b) => { return ` ${s.capitalize(a)} ${b.toUpperCase()}` }) // handle honorifics
     .replace(/(!|\?|:|\.|>>)\s+(\w)/g, (match, a, b) => { return `${a} ${b.toUpperCase()}` }) // Cap first letter of sentences
     .replace(/\s*>>\s*/g, "\n\n") // handle whatever >> means
