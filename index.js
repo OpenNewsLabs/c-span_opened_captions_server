@@ -60,7 +60,7 @@ function formatText(str) {
   // now use our words file to do a bunch of stuff
   words.forEach((pair) => {
     ret = ret
-      .replace(new RegExp(` ${pair[0]}( |\\.|,|:)`, 'gi'), (match, a) => { return ` ${pair[1]}${a}` })
+      .replace(new RegExp(` ${pair[0].replace('.', '\\.')}( |\\.|,|:)`, 'gi'), (match, a) => { return ` ${pair[1]}${a}` })
       .replace(new RegExp(`^${pair[0]}( |\\.|,|:)`, 'i'), (match, a) => { return `${pair[1]}${a}` })
       .replace(new RegExp(` ${pair[0]}$`, 'i'), pair[1])
   })
