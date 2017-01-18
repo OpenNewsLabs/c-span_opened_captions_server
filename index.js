@@ -71,12 +71,17 @@ function formatText(str) {
   })
 
   ret = ret
-    .replace(/\s+(!|\?|;|:|,|\.|')/g, '$1') // remove blank space before puncuation
+    // remove blank space before puncuation
+    .replace(/\s+(!|\?|;|:|,|\.|')/g, '$1')
+    // handle honorifics
     .replace(/ (sen\.?|rep\.?|mr\.?|mrs\.?|ms\.?|dr\.?) (\w)/gi,
-             (match, a, b) => { return ` ${s.capitalize(a)} ${b.toUpperCase()}` }) // handle honorifics
-    .replace(/(!|\?|:|\.|>>)\s+(\w)/g, (match, a, b) => { return `${a} ${b.toUpperCase()}` }) // Cap first letter of sentences
-    .replace(/\s*>>\s*/g, "\n\n>> ") // >> seems to be used instead of repeating speaker prompts in back and forths
-    .replace(/(\.|"|!|\?)\s*([a-zA-Z. ]{2,30}:)/g, '$1\n\n$2') // Put speaker prompts on new lines
+             (match, a, b) => { return ` ${s.capitalize(a)} ${b.toUpperCase()}` })
+    // Cap first letter of sentences
+    .replace(/(!|\?|:|\.|>>)\s+(\w)/g, (match, a, b) => { return `${a} ${b.toUpperCase()}` })
+    // >> seems to be used instead of repeating speaker prompts in back and forths
+    .replace(/\s*>>\s*/g, "\n\n>> ")
+    // Put speaker prompts on new lines
+    .replace(/(\.|"|!|\?|—)\s*([a-zA-Z. ]{2,30}:)/g, '$1\n\n$2')
 
   return ret
 }
