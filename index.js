@@ -7,7 +7,7 @@
 const io = require('socket.io-client')
 const fs = require('fs')
 const http = require('http')
-const url = require('url')
+const URL = require('url')
 const s = require('underscore.string')
 const parseCsv = require('csv-parse/lib/sync')
 
@@ -43,14 +43,19 @@ socket.on('content', data => {
 })
 
 http.createServer((req, res) => {
-  const now = Date.now()
-  const query = url.parse(req.url, true).query
-  const timestamp = parseInt(query.since || 0)
-  res.setHeader('Content-Type', 'application/json')
-  res.end(JSON.stringify({
-    now: now,
-    captions: formatText(getWordsSince(timestamp))
-  }))
+  const url = URL.parse(req.url, true)
+  if ( url.pathname != '/' ) {
+    res.writeHead(404, { 'Content-Type': 'text/plain' })
+    res.end('404 not found')
+  } else {
+    const now = Date.now()
+    const timestamp = parseInt(url.query.since || 0)
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify({
+      now: now,
+      captions: formatText(getWordsSince(timestamp))
+    }))
+  }
 }).listen(process.env.PORT || 5000)
 
 function formatText(str) {
