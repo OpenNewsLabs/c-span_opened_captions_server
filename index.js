@@ -11,6 +11,7 @@ const url = require('url')
 
 const ttl = 20 * 60 * 1000 // 20 mins -> microseconds
 const cacheCheckInterval = 5 * 60 * 1000 // 5 mins -> microseconds
+setInterval(cleanCache, cacheCheckInterval)
 
 // Where we stash our stuff
 var cache = []
@@ -20,7 +21,6 @@ if ( process.env.TRANSCRIPT_FILE ) {
   if ( fs.existsSync(transcriptFile) ) {
     cache.push({t: Date.now(), r: fs.readFileSync(transcriptFile)})
   }
-  setInterval(cleanCache, cacheCheckInterval)
 
   const txt = fs.createWriteStream(transcriptFile)
 } else {
