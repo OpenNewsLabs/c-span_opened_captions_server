@@ -24,7 +24,7 @@
 
 // explained in the github repo for the project, currently using ngrok to prototype.
 // before getting started replace this with the URL of the REST end point of the intermediate server that does the buffering
-var capServer = 'https://vox-cspan-captions.herokuapp.com/';
+var capServer = 'public server url goes here';
 
 /*
 * main function of google app script
@@ -33,14 +33,13 @@ var capServer = 'https://vox-cspan-captions.herokuapp.com/';
 * appends text to document
 */
 function updateCaptions() {
-  // Fetch plain text data from intermediate buffer server with char offset.
+  // Fetch plain text data from intermediate buffer server with time offset.
   var response = fetchData(capServer + "?since=" + getSavedPlace());
 
-  // updating global var for char offset at document level.
-  // global var properties stored as string, converting to int to add response carachter length 
+  // Save new time offset
   savePlace(response.now);
 
-  //append to google doc
+  // Append text to google doc
   appendToDocument(response.captions);
 }
 
