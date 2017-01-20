@@ -48,9 +48,9 @@ The single API end point takes a `since` parameter which is a timestamp. The API
 
 How would I connect this to a google doc?
 
-1- Create a google doc, and add a script to it. **tools** -> **script editor**
-2- Copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
-3- Set the server url in the Google script to correspond to an instance of this Node app.
+1. Create a google doc, and add a script to it. **tools** -> **script editor**
+2. Copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
+3. Set the server url in the Google script to correspond to an instance of this Node app.
 
 ## Run the server locally and connect to Google Apps using ngrok
 
@@ -58,11 +58,11 @@ How would I connect this to a google doc?
 
 >Don’t constantly redeploy your in-progress work to get feedback from clients. ngrok creates a secure public URL (https://yourapp.ngrok.io) to a local webserver on your machine. Iterate quickly with immediate feedback without interrupting flow.
 
-1- To install `npm install -g ngrok`
+1. To install `npm install -g ngrok`
 
-2- To run, start ngrok forwarding  `ngrok http 5000`
+2. To run, start ngrok forwarding  `ngrok http 5000`
 
-3- This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.ngrok.io/) which you can add to the google app script, as described in next section. 
+3. This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.ngrok.io/) which you can add to the google app script, as described in next section. 
 
 Alternatively you can deploy on an other server instance on heroku, EC2 etc.. and get that end point.
 
