@@ -44,6 +44,35 @@ The server starts on port 5000 and begins caching captions. You can set the port
 
 The single API end point takes a `since` parameter which is a timestamp. The API response will include a `now` property which you should use for the next API request. The timestamp holds your place in the captions so subsequent requests will provide captions that can be appended to the captions recieved in previous requests.
 
+First request:
+
+```
+GET /
+```
+
+or
+
+```
+GET /?since=0
+```
+
+which will return something like
+
+```json
+{
+  "now": 123456789,
+  "captions": "blah blah blah ..."
+}
+```
+
+on the next request, include the last `now` value:
+
+```
+GET /?since=123456789
+```
+
+and you'll get a new timestamp and more captions to add to the last ones.
+
 ## Setup the google doc app script
 
 How would I connect this to a google doc?
