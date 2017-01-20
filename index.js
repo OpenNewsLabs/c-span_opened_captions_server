@@ -71,6 +71,8 @@ function formatText(str) {
   })
 
   ret = ret
+    // Music notes
+    .replace(/\s+b\x19\*\s+/, '\n\n🎵\n\n')
     // remove blank space before puncuation
     .replace(/\s+(!|\?|;|:|,|\.|')/g, '$1')
     // handle honorifics
