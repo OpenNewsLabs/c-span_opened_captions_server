@@ -1,6 +1,6 @@
 /*
-*  www.openedcaptions.com routes captions from C-Span 1 channel to a socket end point.
-* This script serves as an itnermediate server to buffer text from socket and expose it as REST API end point.
+* www.openedcaptions.com routes captions from C-Span 1 channel to a socket end point.
+* This script serves as an intermediate server to buffer text from socket and expose it as REST API end point.
 * * that also support char offset. see README for more info.
 *  author: Dan Z @impronunciable
 */
@@ -18,8 +18,8 @@ const words = parseCsv(fs.readFileSync('words.csv'))
 var cache = []
 
 // Setup a cache buster so our cache doesn't use all the memory
-const ttl = 20 * 60 * 1000 // 20 mins -> microseconds
-const cacheCheckInterval = 5 * 60 * 1000 // 5 mins -> microseconds
+const ttl = 20 * 60 * 1000 // 20 mins -> miliseconds
+const cacheCheckInterval = 5 * 60 * 1000 // 5 mins -> miliseconds
 setInterval(cleanCache, cacheCheckInterval)
 
 // Setup a transcription file, if desired
