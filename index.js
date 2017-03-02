@@ -1,6 +1,6 @@
 /*
-*  www.openedcaptions.com routes captions from C-Span 1 channel to a socket end point. 
-* This script serves as an itnermediate server to buffer text from socket and expose it as REST API end point. 
+*  www.openedcaptions.com routes captions from C-Span 1 channel to a socket end point.
+* This script serves as an itnermediate server to buffer text from socket and expose it as REST API end point.
 * * that also support char offset. see README for more info.
 *  author: Dan Z @impronunciable
 */
@@ -30,7 +30,7 @@ if ( process.env.TRANSCRIPT_FILE ) {
     cache.push({t: Date.now(), r: fs.readFileSync(transcriptFile)})
   }
 
-  txt = fs.createWriteStream(transcriptFile, {flag: 'a'})
+  txt = fs.createWriteStream(transcriptFile, {flags: 'a'})
 }
 
 const socket = io.connect('https://openedcaptions.com:443')
