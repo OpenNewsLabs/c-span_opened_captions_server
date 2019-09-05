@@ -1,18 +1,18 @@
-# Opened captions 
+# Opened captions -> Google Doc
+
 ## Intermediate node buffer server + google docs apps script
 
-The aim is to make a system that takes in captions coming from [openedcaptions.com](https://openedcaptions.com) (also on [github](https://github.com/slifty/opened-captions)) by Dan Schultz and adds them to a google doc in real time (or close enough) untill you stop it.
+The aim is to make a system that takes in captions coming from [openedcaptions.com](https://openedcaptions.com) (also on [github](https://github.com/slifty/opened-captions)) by Dan Schultz and adds them to a google doc in real time (or close enough) until you stop it.
 
-One issue is that oogle apps script can refresh like a cron job stile only every minute, while the opened captions server acts as a router from the C-Span tv channel, through [cc extractor]() and provides an end point through socket connection. And oogle app script does not support sockets. So there is the need for an intermediate server to buffer the text. ([Which is what this repo is doing](./index.js)). Otherwise it could all be run just inside of a google app script.
+Opened Captions provides a simple web socket/socket.io interface but a Google Apps script cannot consume a web socket. So provided here is a simple Node.js HTTP server that caches the stream and returns captions via a GET request.
 
-For buffering the text. Run this server on a heroku or EC2 instance or something similar. See below for details on running it locally and using [`ngrok`](https://github.com/OpenNewsLabs/c-span_opened_captions_server#testing-app-script-using-ngrok) to access the local host end point from google docs app script.
+This repo is already configured to be deployed to a Heroku instance. The app uses local memory to cache the captions, so it doesn't require a DBMS or cache daemon. However this also means that stopping, restarting or redeploying the server clears the caption cache.
 
-For the Google app script initially looked at [NPR one on github](https://github.com/nprapps/debates) from [their live fact checking debate](https://source.opennews.org/en-US/articles/how-npr-transcribes-and-fact-checks-debates-live).
-
-Then tried to do a simplified version, which fetches text from a rest API end point and adds it to the google doc every minute. Working version can be found in [./google_app_script/main.gs](./google_app_script/main.gs)
+Run this server on a heroku or EC2 instance or something similar. See below for details on running it locally and using [`ngrok`](#testing-app-script-using-ngrok) to access the local host end point from google docs app script.
 
 ## Opened Captions
-Some more details on opened captions project for context. 
+
+Some more details on opened captions project for context.
 
 >Opened Captions: Turning the spoken words on TV screens into streams of hackable data
 
@@ -26,53 +26,87 @@ https://openedcaptions.com/
 - [githib opened-captions](https://github.com/slifty/opened-captions)
 - [CSPan live stream](http://www.stream2watch.cc/live-television/united-states/c-span-live-stream) to check against captions.
 
-
 ## Setup and run the server
 
-1- `npm install` 
+Install dependencies:
 
-2- then `npm start` it gets the stream from opencaptions and store into `transcription.txt`. It also opens a server on port `5000`.
+```
+npm install
+```
 
-If you pass the querystring offset it offsets the string
-enter with the browser to [`localhost:5000`](localhost:5000) you get everything.
-If you go to [`localhost:5000?offset=100`](http://localhost:5000?offset=100) you get the text starting from the 101 character from when you started the server.
+To start the server:
+
+```
+npm start
+```
+
+The server starts on port 5000 and begins caching captions. You can set the port with the `PORT` environment variable. You can also have the server write the streamed captions to a file by providing the file name or path in the `TRANSCRIPT_FILE` environment variable. The server will also read this file into the cache on startup if the file exists.
+
+The single API end point takes a `since` parameter which is a timestamp. The API response will include a `now` property which you should use for the next API request. The timestamp holds your place in the captions so subsequent requests will provide captions that can be appended to the captions recieved in previous requests.
+
+First request:
+
+```
+GET /
+```
+
+or
+
+```
+GET /?since=0
+```
+
+which will return something like
+
+```json
+{
+  "now": 123456789,
+  "captions": "blah blah blah ..."
+}
+```
+
+on the next request, include the last `now` value:
+
+```
+GET /?since=123456789
+```
+
+and you'll get a new timestamp and more captions to add to the last ones.
 
 ## Setup the google doc app script
+
 How would I connect this to a google doc?
 
-3- create a google doc, and add a script to it. **tools** -> **script editor**      
-4- copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
+1. Create a google doc, and add a script to it. **tools** -> **script editor**
+2. Copy and paste [./google_app_script/main.gs](./google_app_script/main.gs) into the google app script. 
+3. Set the server url in the Google script to correspond to an instance of this Node app.
 
-## create server api end point using ngrok
-[ngrok](https://ngrok.com/) description
+## Run the server locally and connect to Google Apps using ngrok
+
+[ngrok](https://ngrok.com/) description:
 
 >Don’t constantly redeploy your in-progress work to get feedback from clients. ngrok creates a secure public URL (https://yourapp.ngrok.io) to a local webserver on your machine. Iterate quickly with immediate feedback without interrupting flow.
 
-5- To install `npm install -g ngrok`
+1. To install `npm install -g ngrok`
 
-6- To run, start ngrok forwarding  `ngrok http 5000`
+2. To run, start ngrok forwarding  `ngrok http 5000`
 
-7- This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.ngrok.io/) which you can add to the google app script, as described in next section. 
+3. This will give you a url like this [http://c8b8351d.ngrok.io/](http://c8b8351d.ngrok.io/) which you can add to the google app script, as described in next section. 
 
-Alternativly you can deploy on an other server instance on heroku, EC2 etc.. and get that end point.
+Alternatively you can deploy on an other server instance on heroku, EC2 etc.. and get that end point.
 
-## Connect google doc app script to ngrok server
+## Set google doc update every minute
 
-8- add the ngrok url to the google app script, at line 17 `var openedCaptionsIntermediateEndPointEndServer = 'http://c8b8351d.ngrok.io';`      
-9- add script global variable for offset as key with a value of `0` to begin with.  Under **file** -> **projec properties** -> **script properties**. (repeat this step if you need to reset the script).
+Then to get things going setup a 1 minute triggered event in google app script  for `updateCaptions` under **Resources** -> **All your triggers**. More info on running a google app script every minute can be found in their [documentation](https://deveopers.google.com/apps-script/guides/triggers/installable#time-driven_triggers)
 
-10- Then to get things going setup a 1 minute triggered event in google app script  for `myFunction` under **Resources** -> **All your treiggers**. More info on running a google app script every minute can be found in their [documentation](https://deveopers.google.com/apps-script/guides/triggers/installable#time-driven_triggers)
-
-11- Watch the text being updated in the google doc every minute.
-
-For troubleshooting, you can check agains [C-Span live stream](http://www.stream2watch.cc/live-television/united-states/c-span-live-stream) and [opened captions](http:/www.openedcaptions.com).
-
+For troubleshooting, you can check against [C-SPAN live stream](https://www.c-span.org/networks/) or [opened captions](http:/www.openedcaptions.com).
 
 ## Contributors
 
 The project is currently in active development, feel free to get in touch with any questions.
 
-
 [Dan Z](https://github.com/impronunciable)
 
 [Pietro](https://github.com/pietrop)
+
+[Ryan](https://github.com/ryanmark)
