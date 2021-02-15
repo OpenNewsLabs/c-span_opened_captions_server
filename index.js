@@ -1,6 +1,6 @@
 /*
-*  www.openedcaptions.com routes captions from C-Span 1 channel to a socket end point. 
-* This script serves as an itnermediate server to buffer text from socket and expose it as REST API end point. 
+* www.openedcaptions.com routes captions from C-Span 1 channel to a socket end point.
+* This script serves as an intermediate server to buffer text from socket and expose it as REST API end point.
 * * that also support char offset. see README for more info.
 *  author: Dan Z @impronunciable
 */
@@ -10,6 +10,24 @@ const http = require('http')
 const URL = require('url')
 const s = require('underscore.string')
 const parseCsv = require('csv-parse/lib/sync')
+const argv = require('minimist')(process.argv.slice(2),
+                                 {alias: { h: 'help', t: 'transcript',
+                                           p: 'port', s: 'skip', f: 'flags'}});
+
+const help = 'Usage: index.js [options]\n\n' +
+  '    A intermediate node web server to cache CSPAN transcript feed\n\n' +
+  '    Options:\n' +
+  '      -h, --help           output usage information\n' +
+  '      -p, --port           server port\n' +
+  '      -t, --transcript     relative path to the file to store transcript\n' +
+  '      -s, --skip           if present, skips initial load of the transcript file\n' +
+  '      -f, --flags          mode to apply to the transcript file; a: append, w: write';
+
+if (argv.help) {
+  console.log(help);
+  process.exit(0);
+}
+
 
 // Load proper noun dictionary
 const words = parseCsv(fs.readFileSync('words.csv'))
@@ -18,19 +36,22 @@ const words = parseCsv(fs.readFileSync('words.csv'))
 var cache = []
 
 // Setup a cache buster so our cache doesn't use all the memory
-const ttl = 20 * 60 * 1000 // 20 mins -> microseconds
-const cacheCheckInterval = 5 * 60 * 1000 // 5 mins -> microseconds
+const ttl = 20 * 60 * 1000 // 20 mins -> miliseconds
+const cacheCheckInterval = 5 * 60 * 1000 // 5 mins -> miliseconds
 setInterval(cleanCache, cacheCheckInterval)
 
 // Setup a transcription file, if desired
 var txt = false;
-if ( process.env.TRANSCRIPT_FILE ) {
-  const transcriptFile = process.env.TRANSCRIPT_FILE
+if ( argv.transcript || process.env.TRANSCRIPT_FILE ) {
+  const transcriptFile = argv.transcript || process.env.TRANSCRIPT_FILE
   if ( fs.existsSync(transcriptFile) ) {
-    cache.push({t: Date.now(), r: fs.readFileSync(transcriptFile)})
+    if (!argv.skip) {
+      cache.push({t: Date.now(), r: fs.readFileSync(transcriptFile)})
+    }
   }
 
-  txt = fs.createWriteStream(transcriptFile, {flag: 'a'})
+  var flags = argv.flags || 'a'
+  txt = fs.createWriteStream(transcriptFile, {flags: flags})
 }
 
 const socket = io.connect('https://openedcaptions.com:443')
@@ -56,7 +77,7 @@ http.createServer((req, res) => {
       captions: formatText(getWordsSince(timestamp))
     }))
   }
-}).listen(process.env.PORT || 5000)
+}).listen(argv.port || process.env.PORT || 5000)
 
 function formatText(str) {
   var ret = str.toLowerCase().replace("\r\n", ' ') // remove random line breaks
